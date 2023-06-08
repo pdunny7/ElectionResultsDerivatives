@@ -12,11 +12,21 @@ contract ElectionBetMarket is ChainlinkClient {
     uint256 private fee;
     IERC20 public token;
 
+    struct Candidate {
+        uint32 id;
+        string party;
+        string firstName;
+        string lastName;
+        uint32 voteCount;
+        bool isWinner;
+    }
+
     struct Bet {
         uint256 electionId;
         bool isOpen;
         mapping(address => uint256) outcomes;
         mapping(address => uint256) bets;
+        mapping(uint256 => Candidate) candidates;
     }
 
     mapping(uint256 => Bet) private bets;
@@ -70,9 +80,9 @@ contract ElectionBetMarket is ChainlinkClient {
 
     event WinnerFound(bytes32 firstName, bytes32 lastName, uint256 voteCount, bytes32 candidateId, bytes32 party);
 
-    function getCandidate(uint256 _idx) external view returns (uint32, string memory, string memory, string memory, uint32, bool) {
-         (uint32 decodedId, string memory decodedParty, string memory decodedFirstName, string memory decodedLastName, uint32 decodedVoteCount, bool decodedIsWinner) = 
-            abi.decode(candidates[_idx], (uint32, string, string, string, uint32, bool));
-        return (decodedId, decodedParty, decodedFirstName, decodedLastName, decodedVoteCount, decodedIsWinner);
+ function getCandidate(uint256 electionId, uint256 _idx) external view returns (uint32, string memory, string memory, string memory, uint32, bool) {
+        Bet storage bet = bets[electionId];
+        Candidate storage candidate = bet.candidates[_idx];
+        return (candidate.id, candidate.party, candidate.firstName, candidate.lastName, candidate.voteCount, candidate.isWinner);
     }
 }
