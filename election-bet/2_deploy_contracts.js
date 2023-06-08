@@ -1,8 +1,5 @@
-var ElectionOracle = artifacts.require("ElectionOracle");
-var ElectionBet = artifacts.require("ElectionBet");
+const MyContract = artifacts.require('ElectionBetMarket');
 
 module.exports = function(deployer) {
-  deployer.deploy(ElectionOracle).then(function() {
-    return deployer.deploy(ElectionBet, ElectionOracle.address);
-  });
+  deployer.deploy(MyContract);
 };
