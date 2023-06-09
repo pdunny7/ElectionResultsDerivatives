@@ -31,12 +31,11 @@ contract ElectionBetMarket is ChainlinkClient {
 
     mapping(uint256 => Bet) private bets;
 
-    constructor(address _oracle, bytes32 _jobId, uint256 _fee, address _token) public {
-        setPublicChainlinkToken();
-        oracle = _oracle;
-        jobId = _jobId;
-        fee = _fee;
-        token = IERC20(_token);
+constructor(address _oracle, bytes32 _jobId, uint256 _fee, address _token) public {
+    oracle = _oracle;
+    jobId = _jobId;
+    fee = _fee;
+    token = IERC20(_token);
     }
 
     function createBet(uint256 electionId) public {
